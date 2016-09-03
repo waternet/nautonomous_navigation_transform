@@ -1,37 +1,35 @@
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
-#include "geometry_msgs/Pose.h"
+#include "nav_msgs/Odometry.h"
+#include "sensor_msgs/Imu.h"
 
-void poseCallback(const geometry_msgs::Pose::ConstPtr& msg){
+tf::Quaternion quaternion;
+
+void imuCallback(const sensor_msgs::Imu::ConstPtr& msg){
+    quaternion = tf::Quaternion(0,0,msg->orientation.z+0.327,msg->orientation.w-0.268);
+}
+
+void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
     static tf::TransformBroadcaster br;
     ROS_INFO("received pose");
     tf::Transform transform;
-    transform.setOrigin( tf::Vector3(msg->position.x, msg->position.y, 0.0) );
-    tf::Quaternion q;
-    q.setRPY(0, 0, msg->orientation.w);
-    transform.setRotation(q);
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "map", "nautonomous_odom"));
+    transform.setOrigin( tf::Vector3(msg->pose.pose.position.x, msg->pose.pose.position.y, 0.0) );
+    transform.setRotation(quaternion);
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom_combined", "base_link"));
 }
 
 int main(int argc, char** argv){
   ros::init(argc, argv, "nautonomous_tf_publisher");
   ros::NodeHandle n;
 
-  ros::Subscriber sub = n.subscribe("/nautonomous/pose", 100, &poseCallback);
+  ros::Subscriber sub = n.subscribe("/gps_odom", 100, &poseCallback);
+  ros::Subscriber sub2 = n.subscribe("/mavros/imu/data", 100, &imuCallback);
   tf::TransformBroadcaster broadcaster;
 
   ros::Rate rate(100);
 
   while(ros::ok()){
-    /*broadcaster.sendTransform(
-          tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
-          tf::Vector3(0.0, 0.0, 0.0)), ros::Time::now(),
-           "nautonomous_odom", "base_footprint"));*/
-    /*broadcaster.sendTransform(
-            tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
-            tf::Vector3(0.0, 0.0, 0.0)), ros::Time::now(),
-             "odom", "base_link"));*/
-    broadcaster.sendTransform(
+     broadcaster.sendTransform(
           tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
           tf::Vector3(1.0, 0.0, 0.5)), ros::Time::now(),
            "base_link", "camera_link"));
