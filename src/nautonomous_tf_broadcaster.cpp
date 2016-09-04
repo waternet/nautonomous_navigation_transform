@@ -5,10 +5,12 @@
 
 tf::Quaternion quaternion;
 
+//Subscribe to the IMU topic and extract the orientation
 void imuCallback(const sensor_msgs::Imu::ConstPtr& msg){
     quaternion = tf::Quaternion(0,0,msg->orientation.z+0.327,msg->orientation.w-0.268);
 }
 
+//Subscribe to the pose topic and extract the rotation and position
 void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
     static tf::TransformBroadcaster br;
     ROS_INFO("received pose");
@@ -21,14 +23,16 @@ void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
 int main(int argc, char** argv){
   ros::init(argc, argv, "nautonomous_tf_publisher");
   ros::NodeHandle n;
-
+  //Subscribe to GPS and IMU topic
   ros::Subscriber sub = n.subscribe("/gps_odom", 100, &poseCallback);
   ros::Subscriber sub2 = n.subscribe("/mavros/imu/data", 100, &imuCallback);
   tf::TransformBroadcaster broadcaster;
 
+  //Publish every 0.01 sec.
   ros::Rate rate(100);
 
   while(ros::ok()){
+     //Set manual transforms for the robot frame
      broadcaster.sendTransform(
           tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
           tf::Vector3(1.0, 0.0, 0.5)), ros::Time::now(),
@@ -51,22 +55,7 @@ broadcaster.sendTransform(
           tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
           tf::Vector3(0.0, 0.0, 0.0)), ros::Time::now(),
            "map", "odom_combined"));
-    /*broadcaster.sendTransform(
-		tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
-        tf::Vector3(0.0, -0.5, 0.2)), ros::Time::now(),
-         "base_footprint", "pixhawk_frame"));
-    broadcaster.sendTransform(
-        tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
-        tf::Vector3(-0.2, 0.2, 0.4)), ros::Time::now(),
-         "base_footprint", "gps_frame"));
-    broadcaster.sendTransform(
-        tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
-        tf::Vector3(0.0, -0.5, 0.3)), ros::Time::now(),
-         "base_footprint", "gps2_frame"));
-    broadcaster.sendTransform(
-        tf::StampedTransform( tf::Transform(tf::Quaternion(0, 0, 0 , 1),
-        tf::Vector3(0.0, 0.5, 0.3)), ros::Time::now(),
-         "base_footprint", "camera_frame"));*/
+
 	rate.sleep();
     ros::spinOnce();
   }
