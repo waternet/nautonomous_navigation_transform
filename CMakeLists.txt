@@ -129,7 +129,7 @@ include_directories(
 
 ## Declare a C++ executable
 # add_executable(nautonomous_tf_node src/nautonomous_tf_node.cpp)
-add_executable(nautonomous_tf_broadcaster src/nautonomous_tf_broadcaster.cpp)
+add_executable(nautonomous_transforms_node src/nautonomous_transforms_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -185,7 +185,7 @@ add_executable(nautonomous_tf_broadcaster src/nautonomous_tf_broadcaster.cpp)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
-target_link_libraries(nautonomous_tf_broadcaster ${catkin_LIBRARIES})
+target_link_libraries(nautonomous_transforms_node ${catkin_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
