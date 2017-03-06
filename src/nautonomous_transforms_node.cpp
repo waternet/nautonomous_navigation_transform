@@ -16,7 +16,7 @@ void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
     tf::Transform transform;
     transform.setOrigin(tf::Vector3(msg->pose.pose.position.x, msg->pose.pose.position.y, 0.0) );
     transform.setRotation(quaternion);
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom_combined", "base_link"));
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom_combined", "map"));
 }
 
 // Is now done by the tf nodes from the launch file.
