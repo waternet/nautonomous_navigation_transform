@@ -1,4 +1,5 @@
 <launch>
+	<!-- vim: set ft=xml noet : -->
  	<arg name="log" default="false"/>
 
 	<node name="nautonomous_transforms_node" pkg="nautonomous_navigation_transform" type="nautonomous_transforms_node"  output="screen" >
