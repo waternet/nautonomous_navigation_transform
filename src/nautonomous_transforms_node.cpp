@@ -21,13 +21,13 @@ void imuCallback(const sensor_msgs::Imu::ConstPtr& msg){
  */
 void poseCallback(const nav_msgs::Odometry::ConstPtr& msg){
     //ROS_INFO("Quaternion: %.2f", );
-    
+
     if(quaternion.getW() != 0.000 || quaternion.getZ() != 0.000){
         static tf::TransformBroadcaster br;
         tf::Transform transform;
         transform.setOrigin(tf::Vector3(msg->pose.pose.position.x, msg->pose.pose.position.y, 0.0) );
         transform.setRotation(quaternion);
-        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom_combined", "map"));
+        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom_combined", "base_link"));
     }
     
 }
