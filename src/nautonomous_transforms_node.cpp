@@ -11,7 +11,7 @@ tf::Quaternion quaternion;
  *\return
  */
 void imuCallback(const sensor_msgs::Imu::ConstPtr& msg){
-    quaternion = tf::Quaternion(0,0,msg->orientation.z+0.327,msg->orientation.w-0.268); //TODO remove MAGIC numbers
+    quaternion = tf::Quaternion(0,0,msg->orientation.z,msg->orientation.w);
 }
 
 /**
