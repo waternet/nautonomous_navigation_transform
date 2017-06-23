@@ -1,11 +1,11 @@
-# nautonomous navigation transform {#nautonomous_navigation_transform}
-Combines odom+imu to create a transform for /tf.
+# nautonomous tf {#nautonomous_tf}
+Combines gps_odom+imu to create a transform for /tf.
 
 
-nautonomous_transforms_node.cpp
+nautonomous_tf_node.cpp
 
 ##Nodes
-nautonomous_transforms_node
+nautonomous_tf_node
 
 /camera_link_broadcaster <br />
 /footprint_link_broadcaster <br />
