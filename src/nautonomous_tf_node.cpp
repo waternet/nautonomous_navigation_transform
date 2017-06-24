@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
 	ros::NodeHandle n;
 
-	//Subscribe to GPS and IMU topic
+	// Subscribe to GPS and IMU topic
 	ros::Subscriber odometrySubscriber = n.subscribe("odom", 100, &poseCallback);
 	ros::Subscriber imuSubscriber = n.subscribe("imu", 100, &imuCallback);
 
