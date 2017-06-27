@@ -1,5 +1,5 @@
 <launch>
-	<node name="nautonomous_transforms_node" pkg="nautonomous_tf" type="nautonomous_transforms_node"  output="screen" >
+	<node name="nautonomous_tf" pkg="nautonomous_tf" type="nautonomous_tf_node"  output="screen" >
 
   		<remap from="imu" to="/sensor/imu/razor" />
 		<remap from="odom" to="/pose/utm/odom"/>	
