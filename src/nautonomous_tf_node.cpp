@@ -1,4 +1,4 @@
-#include <nautonomous_tf/nautonomous_tf_node.h>
+#include <nautonomous_tf/nautonomous_tf.h>
 
 /**
  *\brief Subscribe to the IMU topic and extract the orientation
@@ -25,7 +25,7 @@ void poseCallback(const nav_msgs::Odometry::ConstPtr& msg)
 		tf::Transform transform;
 		transform.setOrigin(tf::Vector3(msg->pose.pose.position.x, msg->pose.pose.position.y, 0.0) );
 		transform.setRotation(quaternion);
-		br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom_combined", "base_link"));
+		br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
 	}
 
 }
@@ -42,8 +42,8 @@ int main(int argc, char** argv)
 	ros::NodeHandle n;
 
 	// Subscribe to GPS and IMU topic
-	ros::Subscriber odometrySubscriber = n.subscribe("odom", 100, &poseCallback);
-	ros::Subscriber imuSubscriber = n.subscribe("imu", 100, &imuCallback);
+	ros::Subscriber odometrySubscriber = n.subscribe("odom_topic", 100, &poseCallback);
+	ros::Subscriber imuSubscriber = n.subscribe("imu_topic", 100, &imuCallback);
 
 	tf::TransformBroadcaster broadcaster;
 
