@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	ros::NodeHandle n;
 
 	// Subscribe to GPS and IMU topic
-	ros::Subscriber odometrySubscriber = n.subscribe("odom_topic", 100, &poseCallback);
+	ros::Subscriber odometrySubscriber = n.subscribe("odom_combined_topic", 100, &poseCallback);
 	ros::Subscriber imuSubscriber = n.subscribe("imu_topic", 100, &imuCallback);
 
 	tf::TransformBroadcaster broadcaster;
