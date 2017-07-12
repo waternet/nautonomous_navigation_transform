@@ -1,18 +1,5 @@
 <launch>
 
-	<arg name="rosbag_enabled" default="false"/>
-	<arg name="rosbag_prefix_url" default="/tmp"/>
-	
-	<arg name="imu_topic" default="imu_topic"/>
-	<arg name="utm_odom_topic" default="utm_odom_topic"/>
-
-	<!--node name="nautonomous_tf" pkg="nautonomous_tf" type="nautonomous_tf_node"  output="screen" >
-
-  		<remap from="imu_topic" 			to="$(arg imu_topic)" />
-		<remap from="utm_odom_topic" 	to="$(arg utm_odom_topic)"/>	
-
-	</node-->
-
 	<!-- 	base_link is typically the center of mass or the center of turning for your robot, 
 			while base_footprint is located at ground level directly below base_link. 
 			base_footprint is a projection of base_link onto the ground.
@@ -21,13 +8,14 @@
 	<!-- 	static_transform_publisher x y z yaw pitch roll frame_id child_frame_id period_in_ms
 			static_transform_publisher agrs: x y z qx qy qz qw frame_id child_frame_id  period_in_ms
 	-->
-	<node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="1.5 0 0.25 0 0 0 1 base_link camera_link 20"/>
-	<node pkg="tf" type="static_transform_publisher" name="gps_link_broadcaster" 	args="-1.5 0 0.75 0 0 0 1 base_link gps_link 20"/>
-	<node pkg="tf" type="static_transform_publisher" name="imu_link_broadcaster" args="-1.5 0 0.75 0 0 0 1 base_link imu_link 20"/> <!--REDO THIS ONE-->
-	<node pkg="tf" type="static_transform_publisher" name="base_footprint_broadcaster" args="0 0 0 0 0 0 1 base_link base_footprint 20"/>
-	<node pkg="tf" type="static_transform_publisher" name="odom_broadcaster" args="0 0 0 0 0 0 1 map odom_combined 20"/>
+	<node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" args="1.5 0 0.25 0 0 0 1 base_link camera_link 50"/>
+	<node pkg="tf" type="static_transform_publisher" name="gps_link_broadcaster" 	args="-1.5 0 0.75 0 0 0 1 base_link gps_link 50"/>
+	<node pkg="tf" type="static_transform_publisher" name="imu_link_broadcaster" args="-1.5 0 0.75 0 0 0 1 base_link imu_link 50"/>
+	<node pkg="tf" type="static_transform_publisher" name="scan_link_broadcaster" args="0 0 0 0 0 0 1 base_link scan_link 50"/>
+	<node pkg="tf" type="static_transform_publisher" name="base_footprint_broadcaster" args="0 0 0 0 0 0 1 base_link base_footprint 50"/>
+	<node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="0 0 0 0 0 0 1 map odom_combined 50"/>
+	<!-- test -->
+	<node pkg="tf" type="static_transform_publisher" name="odom_broadcaster" args="0 0 0 0 0 0 1 odom_combined base_link 50"/>
 	
-	<node pkg="rosbag" type="record" name="rosbag_tf" args="record -o $(arg rosbag_prefix_url)/tf tf" output="screen" if="$(arg rosbag_enabled)"/>
-    <node pkg="rosbag" type="record" name="rosbag_nautonomous_tf" args="record -o $(arg rosbag_prefix_url)/tf/nautonomous $(arg imu_topic) $(arg odom_combined_topic)" output="screen" if="$(arg rosbag_enabled)"/>
-           
+
 </launch>
